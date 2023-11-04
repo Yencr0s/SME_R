@@ -1,0 +1,356 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+# Documentación
+
+En este documento se recogen todas las funcionalidades implementadas
+junto con sus explicaciones y ejemplos ilustrativos de su uso.
+
+Importamos todas las funciones implementadas.
+
+```{r warning=FALSE}
+source("functions/corr.R")
+source("functions/discretizacion.R")
+source("functions/filtrado.R")
+source("functions/graficos.R")
+source("functions/metricas.R")
+source("functions/norm-est.R")
+```
+
+Generamos diferentes tipos de arrays y un dataset de ejemplo con 10
+individuos y 7 variables.
+
+```{r}
+a_n <- c(1.6,3.6,5.5,3.7,1.3,5.6,7.3,8.8,2.5,6.9)
+a_l <- c('a','a','c','b','c','j','s','h','b','j')
+
+Name <- c('Juan','Pedro','Maria','Jose','Luis','Ana','Rosa','Carlos','Jorge','Luisa')
+Subject <- c('Math','Biology','Chemistry','Math','Math','Biology','Chemistry','Math','Math','Biology')
+Problem_1 <- c(5.5,9.5,4.0,4.5,3.0,6.5,5.0,9.5,4.0,7.5) #out of 10
+Problem_2 <- c(0.45,0.90,0.60,0.75,0.30,0.25,0.40,0.85,0.60,0.65) #out of 1
+Problem_3 <- c(35,85,70,85,30,45,30,75,13,55) #out of 100
+Extra_Points <- c(2,0,2,3,0,1,0,1,1,1) #out of 3
+Pass <- c(TRUE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,TRUE,FALSE,TRUE)
+
+df <- data.frame(Name,Subject,Problem_1,Problem_2,Problem_3,Extra_Points,Pass)
+
+```
+
+Imprimimos los datos por pantalla para ver como han quedado
+
+```{r}
+print('Array de numérico:')
+a_n
+print("String:")
+a_l
+print("Dataframe:")
+df
+```
+
+# Algoritmos de discterización
+
+Discretización para un solo atributo
+
+```{r}
+print('Discretización por igual anchura')
+
+discretizarEW(a_n,3,labels=F)
+
+print('Discretización por igual frecuencia')
+
+discretizarEF(a_n,3,labels = F)
+```
+
+Si queremos que nos muestre los intervalos a los que pertenecen en los
+arrays en lugar de los indices ponemos el flag de labels a True.
+
+```{r}
+print('Discretización por igual anchura')
+
+discretizarEW(a_n,3,labels=T)
+
+print('Discretización por igual frecuencia')
+
+discretizarEF(a_n,3,labels = T)
+
+```
+
+Discretización para el dataset completo. (Esto solo afectará a las
+variables continuas del dataset, que en este caso son: "Problem_1",
+"Problem_2", Problem_3" y "Extra_Points")
+
+Discretización por igual anchura
+
+```{r}
+df_ew = discretizarEW(df,3)
+print(df_ew)
+```
+
+Discretización por igual frecuencia
+
+```{r}
+df_ef = discretizarEF(df,3)
+print(df_ef)
+```
+
+# Cálculo de métricas para los atributos de un dataset: varianza y AUC para las variables contínuas y entropía para las discretas.
+
+Calculo de la entropía para un solo vector.
+
+```{r}
+print('Array:')
+print(a_l)
+print('Entropía:')
+entropia(a_l)
+```
+
+Calculo de la entropía para un dataframe, este calculo solo se aplicará
+a las variables discretas.
+
+```{r}
+print('Entropía')
+print(entropia(df))
+```
+
+Calculo de la varianza para un solo vector
+
+```{r}
+print('Array:')
+print(a_n)
+print('Varianza:')
+varianza(a_n)
+```
+
+Como podemos ver en el siguiente ejemplo, al descomentar la siguiente
+línea saltará una excepción si intentamos calcular la varianza de un
+vector de valores no numéricos.
+
+(Este mismo error saltará con todas aquellas funciones que solo sean
+aplicables a vectores numéricos: varianza, covarianza, desviación
+típica, estandarización y normalización.)
+
+```{r}
+# Descomentar la siguiente linea para ver el error
+# varianza(a_l)
+```
+
+Calculo de la varianza para un dataframe, este calculo solo se aplicará
+a las variables numéricas.
+
+```{r}
+print('Varianza:')
+print(varianza(df))
+```
+
+Cáculo de la covarianza entre dos vectores
+
+```{r}
+a_n2 <- c(1.3,5.6,3.4,3.6,2.6,5.6,3.7,7.1,8.3,6.0)
+print("Vector 1:")
+a_n
+print("Vector 2:")
+a_n2
+print("Covarianza:")
+covarianza(a_n,a_n2)
+
+```
+
+Cálculo de la desviación típica
+
+```{r}
+print("Vector:")
+a_n
+print("Desviación típica:")
+desviacion(a_n)
+```
+
+Cálculo del AUC de un dataframe. Para esto tenemos que especificar el
+dataset, la columna objetivo y la clase binaria que usaremos. Y nos
+devolverá dos listas (valores de true positive y false positive rate
+para cada punto de corte) y el valor del AUC.
+
+```{r}
+aux = aucf(df,'Problem_1','Pass')
+tprl <- aux$tprl
+fprl <- aux$fprl
+auc <- aux$auc
+
+print("True positive rate list:")
+print(tprl)
+
+print("False positive rate list:")
+print(fprl)
+
+print("AUC:")
+print(auc)
+```
+
+Con las dos listas que nos devuelve podemos representar la curva ROC.
+Disponemos del flag "zoom" que hace que la gráfica se ajuste solamente a
+la curva, por defecto estará en false.
+
+```{r}
+plot_roc_curve(tprl,fprl)
+
+plot_roc_curve(tprl,fprl,zoom=T)
+```
+
+La función metricas calcula la varianza y AUC para las variables
+contínuas y entropía para las discretas de un dataframe. Para el AUC es
+necesario especificar una variable clase binaria con la que evaluar el
+AUC de los atributos numéricos, en caso de no introducirla se omitirá
+esta métrica. Disponemos del falg Roc_curve que nos permite plotear
+todas las curvas ROC de las variables continuas en caso de ponerlo a
+True, por defecto estará en False.
+
+La función devolverá dos dataframes, uno para las variables continuas y
+otro para las categóricas.
+
+```{r}
+metricas(df,"Pass")
+```
+
+# Normalización y estandarización de variables, tanto de manera individual como para el dataset completo.
+
+La función normalizar nos permite aplicar dicha transformacion tanto a
+vectores numéricos de todos los tipos mencionados previamente como a
+todas las columnas numéricas de un dataframe.
+
+```{r}
+print("Vector:")
+a_n
+print("Vector normalizado:")
+print(normalizar(a_n))
+
+print(normalizar(df))
+```
+
+De la misma manera la funcion estandarizar nos permite aplicar dicha
+transformazión al mismo tipo de datos que en el caso de la función
+normalizar.
+
+```{r}
+print("Vector:")
+a_n
+print("Vector estandarizado:")
+print(estandarizar(a_n))
+
+print(estandarizar(df))
+```
+
+# Filtrado de variables en base a las métricas implementadas.
+
+La función filtrar nos permite quedarnos solo con aquellas variables que
+cumplan con las condiciones que especifiquemos.
+
+Recibe un dataframe, las condiciones de varianza y entropía y los
+valores para cada una de dichas condiciones. Solo se filtrará por las
+condiciones introducidas, es decir, si se introduce la condicion de
+varianza pero no la de entropía, solo se filtrará por la primera.
+
+```{r}
+#normalizamos el dataframe
+df_n = normalizar(df)
+df_n
+```
+
+Calculamos la entropía del dataframe y vemos con que valor filtrar.
+
+```{r}
+entropia(df_n)
+```
+
+Filtramos con entropía \< 1
+
+```{r}
+filtered_df = filtrar(df_n,Entropy = T ,condition = '<', value = 1.0)
+filtered_df
+```
+
+Como hemos podido ver se han eliminado las columnas Name y Subject.
+
+Ahora vemos la varianza del dataframe.
+
+```{r}
+varianza(filtered_df)
+```
+
+Filtramos el dataset que hemos filtrado previemente por la entropía y lo
+filtramos ahora por varianza \>= 0.117357
+
+```{r}
+filtered_df = filtrar(filtered_df,Entropy = F ,condition = '>=', value = 0.117357)
+filtered_df
+```
+
+Como resultado obtenemos un dataset cuyas variables numéricas tienen una
+varianza \>= 0.117357 y las variables discretas tienen una entroía \< 1.
+
+# Cálculo de la correlación (información mutua en el caso de variables categóricas) por pares entre variables de un dataset.
+
+La funcion correlacion nos permite obtener un la correlación entre todas
+las variables numéricas de un dataframe.
+
+Nos devuelve un dataframe únicamente con los resultados de las variables
+analizadas y otro con la matriz de correlaciones. De esta manera
+tendremos dos maneras de ver los datos.
+
+```{r}
+aux = correlacion(df_n)
+corr_pares = aux[[1]]
+corr_mat = aux[[2]]
+
+corr_pares
+
+corr_mat
+```
+
+La funcion informacion_mutua nos permite calcular la informacion mutua
+entre las variables discretas del dataframe.
+
+De la misma manera que el anterior, devolverá dos dataframes, uno
+únicamente con los resultados de las variables analizadas y otro con la
+matriz de información mutua.
+
+```{r}
+aux = informacion_mutua(df_n)
+inf_pares = aux[[1]]
+inf_mat = aux[[2]]
+
+inf_pares
+
+inf_mat
+```
+
+Por último disponemos de la funcion cor_mut, que nos calculará la
+correlacion de las variables nuericas del dataset y la información mutua
+de las variables discretas.
+
+Devolverá 3 dataframes, uno con las correlaciones por pares, otro con
+las informaciones mutuas por pares y un último que recoje en forma de
+matriz las correlaciones y las informaciones mutuas.
+
+```{r}
+aux <- cor_mut(df_n)
+cor <- aux[[1]]
+mut <- aux[[2]]
+mat <- aux[[3]]
+
+print(cor)
+print(mut)
+print(mat)
+```
+
+Ploteamos la matriz con la función plot_mat_heatmap
+
+(para plotear este gráfico es necesario tener instalada la funcion
+reshape2,
+
+```{r warning=FALSE}
+
+plot_mat_heatmap(mat)
+
+```
