@@ -1,21 +1,16 @@
-#instalar los paquetes necesarios
-install.packages("ggplot2")
-install.packages("plotly")
-install.packages("reshape2")
-
 #activar los paquetes
 library(ggplot2)
 library(plotly)
 library(reshape2)
 
 
-#' '''
+
 #' Función para representar la curva ROC.
 #' 
 #' @param tprl: lista de valores de verdaderos positivos
 #' @param fprl: lista de valores de falsos positivos
 #' @param zoom: booleano para indicar si se quiere hacer zoom en la gráfica
-#' '''
+#' @export
 plot_roc_curve <- function(tprl, fprl, zoom = FALSE) {
   #Definimos el maximo y el minimo de los ejes dependiendo de si se quiere hacer zoom o no
   if (zoom){
@@ -26,11 +21,10 @@ plot_roc_curve <- function(tprl, fprl, zoom = FALSE) {
   abline(0,1,col="blue",lty=2)
 }
 
-#' '''
 #' Funcion para graficar la matriz de correlaciones e informacion mutua
 #'
 #' @param df: df de correlaciones e informacion mutua
-#' '''
+#' @export
 plot_mat_heatmap <- function(df){
   m <- melt(as.matrix(mat))
   ggplot(data = m, aes(x = Var1, y = Var2, fill = value)) +

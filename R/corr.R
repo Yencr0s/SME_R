@@ -1,11 +1,10 @@
 
-# '''
-# Funcion que calcula la correlacion de dos vectores.
 
-# @param x: vector
-# @param y: vector
-# @return: correlacion de los vectores
-# '''
+#' Funcion que calcula la correlacion de dos vectores.
+#' @param x: vector
+#' @param y: vector
+#' @return: correlacion de los vectores
+#' @export
 v_cor <- function(x,y){
     if (is.numeric(x) && is.numeric(y)){
         return (covarianza(x,y)/(desviacion(x)*desviacion(y)))
@@ -13,12 +12,11 @@ v_cor <- function(x,y){
     stop('Los vectores deben ser numéricos')
 }
 
-# '''
-# Funcion que calcula la matriz de correlacion de un dataframe entre todas las variables numéricas.
 
-# @param df: dataframe
-# @return: lista con el df de correlacion entre las variables numericas y la matriz de correlacion
-# '''
+#' Funcion que calcula la matriz de correlacion de un dataframe entre todas las variables numéricas.
+#' @param df: dataframe
+#' @return: lista con el df de correlacion entre las variables numericas y la matriz de correlacion
+#' @export
 correlacion <- function(df){
   #Obtenemos las columnas numéricas
   numeric<- sapply(df, is.numeric)
@@ -47,13 +45,13 @@ correlacion <- function(df){
   return (list(data.frame(corr, row.names = names),data.frame(corr_mat)))
 }
 
-# '''
-# Funcion que calcula la informacion mutua de dos vectores.
 
-# @param x: vector
-# @param y: vector
-# @return: informacion mutua de los vectores
-# '''
+#' Funcion que calcula la informacion mutua de dos vectores.
+#'
+#' @param x: vector
+#' @param y: vector
+#' @return: informacion mutua de los vectores
+#' @export
 v_mutua <- function(x,y){
   #Calculamos la proporcion de cada valor
   px <- table(x)/length(x)
@@ -70,12 +68,12 @@ v_mutua <- function(x,y){
   return(mut)
 }
 
-# '''
-# Funcion que calcula la matriz de informacion mutua de un dataframe entre las variables categóricas.
 
-# @param df: dataframe
-# @return: lista con el df de informacion mutua entre las variables categoricas y la matriz de informacion mutua
-# '''
+#' Funcion que calcula la matriz de informacion mutua de un dataframe entre las variables categóricas.
+#'
+#' @param df: dataframe
+#' @return: lista con el df de informacion mutua entre las variables categoricas y la matriz de informacion mutua
+#' @export
 informacion_mutua <- function(df){
     #Obtenemos las columnas categoricas
     cols <- sapply(df, is.numeric)
@@ -107,15 +105,15 @@ informacion_mutua <- function(df){
     return(list(data.frame(mut, row.names = names),data.frame(mut_mat)))
 }
 
-# '''
-# Funcion que calcula la matriz de correlacion y la matriz de informacion mutua de un dataframe entre todas las variables.
 
-# @param df: dataframe
-# @return: lista con :
-#         - dataframe con los valores de correlacion de las variables numericas
-#         - dataframe con los valores de informacion mutua de las variables categoricas
-#         - df de correlacion e informacion mutua de todas las variables
-# '''
+#' Funcion que calcula la matriz de correlacion y la matriz de informacion mutua de un dataframe entre todas las variables.
+#'
+#' @param df: dataframe
+#' @return: lista con :
+#'         - dataframe con los valores de correlacion de las variables numericas
+#'         - dataframe con los valores de informacion mutua de las variables categoricas
+#'         - df de correlacion e informacion mutua de todas las variables
+#' @export
 cor_mut <- function(df){
   #Creamos el dataframe vacio del resultado
   m <- matrix(NA, nrow = ncol(df), ncol = ncol(df),)

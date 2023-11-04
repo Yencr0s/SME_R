@@ -9,15 +9,15 @@ editor_options:
 En este documento se recogen todas las funcionalidades implementadas
 junto con sus explicaciones y ejemplos ilustrativos de su uso.
 
-Importamos todas las funciones implementadas.
+Primero hay que instalar el paquete functionsR con el archivo
+functionsR_0.1.0.tar e importar las funciones que nos da mediante la
+función library()
 
 ```{r warning=FALSE}
-source("functions/corr.R")
-source("functions/discretizacion.R")
-source("functions/filtrado.R")
-source("functions/graficos.R")
-source("functions/metricas.R")
-source("functions/norm-est.R")
+library(ggplot2)     #para los plot
+library(dplyr)       #para hacer uso de pipes %>%
+library(reshape2)    #para hacer uso de la función melt() y poder hacer el heatmap
+library(functionsR)
 ```
 
 Generamos diferentes tipos de arrays y un dataset de ejemplo con 10

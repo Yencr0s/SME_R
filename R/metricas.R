@@ -1,11 +1,8 @@
-
-
-#' '''
 #' Funcion para calcular la entropia de un vector
 #' 
 #' @param x: vector de datos
 #' @return: entropia del vector
-#' '''
+#' @export
 v_entropia <- function(x) {
   #Obtenemos la frecuencia de cada valor, alculamos la probabilidad de cada valor y devolvemos la entropia
   frec <- table(x)
@@ -13,24 +10,24 @@ v_entropia <- function(x) {
   return(-sum(p*log2(p)))
 }
 
-#' '''
+
 #' Funcion para calcular la entropia de un dataframe
 #' 
 #' @param df: dataframe de datos
 #' @return: vector con la entropia de cada columna
-#' '''
+#' @export
 t_entropia <- function(x){
   #Seleccionamos las columnas que no son numericas y calculamos la entropia de cada una
   nums <- x[!sapply(x, is.numeric)]
   return(apply(nums, 2, v_entropia))
 }
 
-#' '''
+
 #' Funcion para calcular la entropia de un vector o dataframe
 #' 
 #' @param df: vector o dataframe de datos
 #' @return: valor de la entropia o vector con la entropia de cada columna
-#' '''
+#' @export
 entropia <- function(x) {
   #Comprobamos si x es un dataframe o un vector
   if (is.data.frame(x)) {
@@ -40,13 +37,11 @@ entropia <- function(x) {
   }
 }
 
-
-#' '''
 #' Función para calcular la varianza de un vector
 #' 
 #' @param x: vector de datos
 #' @return: varianza del vector
-#' '''
+#' @export
 v_varianza <- function(x) {
   #Comprobamos que el vector es numerico y devolvemos la varianza
   if (is.numeric(x))
@@ -56,25 +51,22 @@ v_varianza <- function(x) {
   
 }
 
-#' '''
 #' Funcion para calcular la varianza de un dataframe
 #' 
 #' @param df: dataframe de datos
 #' @return: vector con la varianza de cada columna
-#' '''
+#' @export
 t_varianza <- function(x){
   #Seleccionamos las columnas que son numericas y calculamos la varianza de cada una
   nums <- x[sapply(x, is.numeric)]
   return(apply(nums, 2, v_varianza))
 }
 
-
-#' '''
 #' Funcion para calcular la varianza de un vector o dataframe
 #' 
 #' @param df: vector o dataframe de datos
 #' @return: valor de la varianza o vector con la varianza de cada columna
-#' '''
+#' @export
 varianza <- function(df){
     #Comprobamos si x es un dataframe o un vector
     if (is.data.frame(df)){
@@ -84,13 +76,12 @@ varianza <- function(df){
     }
 }
 
-#' '''
 #' Funcion para calcular la covarianza de dos vectores
 #' 
 #' @param x: primer vector de datos
 #' @param y: segundo vector de datos
 #' @return: covarianza de los vectores
-#' '''
+#' @export
 covarianza <- function(x,y){
     #Comprobamos que los vectores son numericos y devolvemos la covarianza
     if (is.numeric(x) && is.numeric(y)){
@@ -99,24 +90,22 @@ covarianza <- function(x,y){
     stop('Los vectores deben ser numéricos')
 }
 
-#' '''
 #' Funcion para calcular la desviacion estandar de un vector
 #' 
 #' @param x: vector de datos
 #' @return: desviacion estandar del vector
-#' '''
+#' @export
 desviacion <- function(x) {
   return(sqrt(v_varianza(x)))
 }
 
-#' '''
 #' Funcion para calcular el área bajo la curva ROC
 #' 
 #' @param df: dataframe de datos
 #' @param target: nombre de la columna objetivo
 #' @param bin_class: nombre de la columna con la clasificacion binaria
 #' @return: vector con los valores de tpr, fpr y el area bajo la curva
-#' '''
+#' @export
 aucf <- function(df, target, bin_class){
   #Ordenamos el dataframe por la columna objetivo
   df <- df[order(df[,target], decreasing = T),]
@@ -140,7 +129,6 @@ aucf <- function(df, target, bin_class){
   return(list(tprl=tprl,fprl=fprl, auc = auc))
 }
 
-#' '''
 #' Funcion que realiza el cálculo de métricas para los atributos de un dataset: varianza y AUC para las variables contínuas y entropía para las discretas.
 #' Esta funcion reconoce automaticmente el tipo de variable de cada columna del dataframe y calcula la métrica correspondiente.
 #' 
@@ -148,7 +136,7 @@ aucf <- function(df, target, bin_class){
 #' @param bin_class: nombre de la columna con la clasificacion binaria
 #' @param Roc_curve: booleano que indica si se desea graficar la curva ROC
 #' @return: lista de 2 dataframes, el primero con las metricas de las variables contínuas y el segundo con las metricas de las variables discretas
-#' '''
+#' @export
 metricas <- function(df, bin_class=NULL, Roc_curve=FALSE){
   
   #Seleccionamos las variables continuas

@@ -1,0 +1,21 @@
+Package: functionsR
+Type: Package
+Title: Paquete de funciones de R
+Version: 0.1.0
+Author: Roberto Riaño Hidalgo
+Maintainer: Roberto Riaño Hidalgo <rriano002@ikasle.ehu.eus>
+Description: Functions for the SME project
+License: file LICENSE
+Collate:
+  corr.R
+  discretizacion.R
+  filtrado.R
+  graficos.R
+  metricas.R
+  norm-est.R
+Imports:
+  dplyr,
+  ggplot2,
+  reshape2
+Encoding: UTF-8
+RoxygenNote: 7.2.3

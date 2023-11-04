@@ -1,5 +1,3 @@
-
-#' '''
 #' Funcion para filtrar un dataframe por entropia o varianza. Se eliminan todas aquellas
 #' columnas que no cumplan la condicion indicada. Si se quiere filtrar por entropia, se debe 
 #' indicar el parametro Entropy como True, si se quiere filtrar por varianza, se debe indicar
@@ -10,7 +8,7 @@
 #' @param condition: string con la condicion para filtrar (<, >, <=, >=, ==)
 #' @param valueV: valor para filtrar
 #' @return: dataframe filtrado
-#' '''
+#' @export
 filtrar <- function(df, Entropy=TRUE, condition="", value = 0){
   #Obtenemos los df con la varianza y la entropia
   aux <- metricas(df)

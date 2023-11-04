@@ -1,9 +1,8 @@
-# '''
-# Funcion para normalizar un vector
-# 
-# @param x: vector de datos
-# @return: vector normalizado
-# '''
+#' Funcion para normalizar un vector
+#' 
+#' @param x: vector de datos
+#' @return: vector normalizado
+#' @export
 v_normalizar <- function(x){
   #Comprobamos que el vector es numerico y devolvemos el vector normalizado
   if(!is.numeric(x)){
@@ -13,12 +12,11 @@ v_normalizar <- function(x){
   }
 }
 
-# '''
-# Funcion para normalizar un dataframe
-# 
-# @param df: dataframe de datos
-# @return: dataframe normalizado
-# '''
+#' Funcion para normalizar un dataframe
+#' 
+#' @param df: dataframe de datos
+#' @return: dataframe normalizado
+#' @export
 t_normalizar <- function(x) {
   #Seleccionamos las columnas que son numericas y normalizamos cada una
   numerics <- sapply(x, is.numeric)
@@ -27,12 +25,11 @@ t_normalizar <- function(x) {
   return(x)
 }
 
-# '''
-# Funcion que normaliza un dataframe o un vector.
-
-# @param x: vector o dataframe de pandas
-# @return: vector o dataframe normalizado
-# '''
+#' Funcion que normaliza un dataframe o un vector.
+#'
+#' @param x: vector o dataframe de pandas
+#' @return: vector o dataframe normalizado
+#' @export
 normalizar <- function(x) {
   #Comprobamos si x es un dataframe o un vector
   if (is.data.frame(x)) {
@@ -42,13 +39,11 @@ normalizar <- function(x) {
   }
 }
 
-
-# '''
-# Funcion para estandarizar un vector
-# 
-# @param x: vector de datos
-# @return: vector estandarizado
-# '''
+#' Funcion para estandarizar un vector
+#' 
+#' @param x: vector de datos
+#' @return: vector estandarizado
+#' @export
 v_estandarizar <- function(x){
   #Comprobamos que el vector es numerico y devolvemos el vector estandarizado
   if (is.numeric(x)){
@@ -57,13 +52,11 @@ v_estandarizar <- function(x){
   stop('El vector debe ser numérico')
 }
 
-
-# '''
-# Funcion para estandarizar un dataframe
-# 
-# @param df: dataframe de datos
-# @return: dataframe estandarizado
-# '''
+#' Funcion para estandarizar un dataframe
+#' 
+#' @param df: dataframe de datos
+#' @return: dataframe estandarizado
+#' @export
 t_estandarizar <- function(x) {
   #Seleccionamos las columnas que son numericas y estandarizamos cada una
   numerics <- sapply(x, is.numeric)
@@ -72,12 +65,11 @@ t_estandarizar <- function(x) {
   return(x)
 }
 
-# '''
-# Funcion que estandariza un dataframe o un vector.
-# 
-# @param x: vector o dataframe
-# @return: vector o dataframe estandarizado
-# '''
+#' Funcion que estandariza un dataframe o un vector.
+#' 
+#' @param x: vector o dataframe
+#' @return: vector o dataframe estandarizado
+#' @export
 estandarizar <- function(df){
   #Comprobamos si x es un dataframe o un vector
   if (is.data.frame(df)){
